@@ -50,6 +50,17 @@
             </div>
           </div>
         </a>
+
+        <ul>
+          <li>
+            <a href="/restaurants/{{{this.id}}}">detail</a>
+            <a href="/restaurants/{{{this.id}}}/edit">edit</a>
+            <form action="/restaurants/{{{this.id}}}/delete" method="POST" style="display: inline;">
+              <button type="submit">delete</button>
+            </form>
+          </li>
+
+        </ul>
         {{/each}}
 
 

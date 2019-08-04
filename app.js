@@ -39,6 +39,14 @@ app.get('/restaurants/:restaurant_id', (req, res) => {
   res.render('show', { restaurant: restaurant[0] })
 })
 
+app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+
+  //注意：是  restaurant.id 不是 restaurant
+  //restaurant => restaurant.id == req.params.restaurant_id  這是 arror function
+  const restaurant = restaurantList.results.filter(restaurant => restaurant.id == req.params.restaurant_id)
+
+  res.render('edit', { restaurant: restaurant[0] })
+})
 
 app.get('/search', (req, res) => {
   //req.query 取得？後的參數值

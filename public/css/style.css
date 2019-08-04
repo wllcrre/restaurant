@@ -93,3 +93,15 @@ header {
     height: auto;
   }
 }
+
+body {
+  text-align: center;
+}
+
+input {
+  width: 500px;
+}
+
+textarea {
+  width: 500px;
+}

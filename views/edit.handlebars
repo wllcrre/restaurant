@@ -1,24 +1,34 @@
 <!-- ./views/edit.handlebars -->
-<form action="/todos/{{{todo.id}}}" method="POST">
+<form action="/restaurants/{{{restaurant.id}}}" method="POST">
   <input type="text" placeholder="name" name="name" value="{{restaurant.name}}">
+  <br>
+  <br>
+  <input type="text" placeholder="name_en" name="name_en" value="{{restaurant.name_en}}">
   <br>
   <br>
   <input type="text" placeholder="category" name="category" value="{{restaurant.category}}">
   <br>
   <br>
-  <input type="text" placeholder="google_map" name="google_map" value="{{{restaurant.google_map}}}">
+  <input type=" text" placeholder="image" name="image" value="{{{restaurant.image}}}">
   <br>
   <br>
   <input type="text" placeholder="phone" name="phone" value="{{{restaurant.phone}}}">
   <br>
   <br>
-  <textarea name="description" form="usrform">{{{restaurant.description}}}</textarea>
+  <input type="text" placeholder="google_map" name="google_map" value="{{{restaurant.google_map}}}">
   <br>
   <br>
-  <input type="text" placeholder="image" name="image" value="{{{restaurant.image}}}">
+
+  <input type="text" placeholder="location" name="location" value="{{{restaurant.location}}}">
   <br>
   <br>
-  <button type="submit">Edit</button>
+  <input type="text" placeholder="rating" name="rating" value="{{{restaurant.rating}}}">
+  <br>
+  <br>
+  <textarea name="description">{{{restaurant.description}}}</textarea>
+  <br>
+  <br>
+  <button type=" submit">Edit</button>
 </form>
 
 <!-- ./views/show.handlebars -->

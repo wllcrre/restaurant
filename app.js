@@ -5,6 +5,10 @@ const port = 3000
 
 // require express-handlebars here
 const exphbs = require('express-handlebars')
+const bodyParser = require('body-parser')
+
+// 設定 bodyParser
+app.use(bodyParser.urlencoded({ extended: true }));
 
 const mongoose = require('mongoose')
 mongoose.connect('mongodb://127.0.0.1/restaurant', { useNewUrlParser: true })
@@ -19,7 +23,7 @@ db.once('open', () => {
   console.log('mongndb connected 123!')
 })
 
-// 載入 Model
+// 載入 restaurant Model
 const Restaurant = require('./models/restaurant')
 // hereee  error !!!!
 
@@ -35,35 +39,74 @@ app.use(express.static('public'))
 // routes setting
 app.get('/', (req, res) => {
 
-  // past the number list into 'index' partial template
   // res.render('index', { restaurants: restaurantList })
-  res.render('index', { restaurants: restaurantList.results })
 
+  Restaurant.find((err, restaurants) => {
+    if (err) return console.log(err)
+    return res.render('index', { restaurants: restaurants })
+  })
 })
 
-
-app.get('/', (req, res) => {
-  // past the movie data into 'index' partial template
-  res.render('index', { restaurants: restaurantList.results })
-})
-
-app.get('/restaurants/:restaurant_id', (req, res) => {
+app.get('/restaurants/:id', (req, res) => {
 
   //注意：是  restaurant.id 不是 restaurant
   //restaurant => restaurant.id == req.params.restaurant_id  這是 arror function
-  const restaurant = restaurantList.results.filter(restaurant => restaurant.id == req.params.restaurant_id)
+  // const restaurant = restaurantList.results.filter(restaurant => restaurant.id == req.params.restaurant_id)
 
-  res.render('show', { restaurant: restaurant[0] })
+  // res.render('show', { restaurant: restaurant[0] })
+
+
+  Restaurant.findById(req.params.id, (err, restaurant) => {
+    if (err) return console.log(err)
+    return res.render('show', { restaurant: restaurant })
+  })
+
+
 })
 
-app.get('/restaurants/:restaurant_id/edit', (req, res) => {
+app.get('/restaurants/:id/edit', (req, res) => {
 
   //注意：是  restaurant.id 不是 restaurant
   //restaurant => restaurant.id == req.params.restaurant_id  這是 arror function
-  const restaurant = restaurantList.results.filter(restaurant => restaurant.id == req.params.restaurant_id)
+  // const restaurant = restaurantList.results.filter(restaurant => restaurant.id == req.params.restaurant_id)
 
-  res.render('edit', { restaurant: restaurant[0] })
+  // res.render('edit', { restaurant: restaurant[0] })
+
+
+  Restaurant.findById(req.params.id, (err, restaurant) => {
+    if (err) return console.log(err)
+    return res.render('edit', { restaurant: restaurant })
+  })
+
 })
+
+// Modify a restaurant
+app.post('/restaurants/:id', (req, res) => {
+
+  Restaurant.findById(req.params.id, (err, restaurant) => {
+    if (err) return console.log(err)
+
+    restaurant.name = req.body.name
+    restaurant.name_en = req.body.name_en
+    restaurant.category = req.body.category
+    restaurant.image = req.body.image
+    restaurant.location = req.body.location
+    restaurant.phone = req.body.phone
+    restaurant.google_map = req.body.google_map
+    restaurant.rating = req.body.rating
+    restaurant.description = req.body.description
+
+    restaurant.save((err) => {
+      if (err) return console.log(err)
+      return res.redirect('/')
+    })
+
+    //save to model
+  })
+
+})
+
+
 
 app.get('/search', (req, res) => {
   //req.query 取得？後的參數值

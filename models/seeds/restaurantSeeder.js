@@ -25,7 +25,6 @@ db.once('open', () => {
       category: restaurant.category,
       image: restaurant.image,
       location: restaurant.location,
-      name_en: restaurant.name_en,
       phone: restaurant.phone,
       google_map: restaurant.google_map,
       rating: restaurant.rating,
@@ -35,4 +34,3 @@ db.once('open', () => {
 
   console.log('done!')
 })
-

@@ -6,6 +6,23 @@ const port = 3000
 // require express-handlebars here
 const exphbs = require('express-handlebars')
 
+const mongoose = require('mongoose')
+mongoose.connect('mongodb://127.0.0.1/restaurant', { useNewUrlParser: true })
+const db = mongoose.connection
+
+
+db.on('error', () => {
+  console.log('mongodb error!')
+})
+
+db.once('open', () => {
+  console.log('mongndb connected 123!')
+})
+
+// 載入 Model
+const Restaurant = require('./models/restaurant')
+// hereee  error !!!!
+
 const restaurantList = require('./restaurant.json')
 
 // setting template engine

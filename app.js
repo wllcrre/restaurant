@@ -136,6 +136,22 @@ app.post('/restaurants/:id', (req, res) => {
 
 })
 
+// delete a restaurant
+app.post('/restaurants/:id/delete', (req, res) => {
+
+  Restaurant.findById(req.params.id, (err, restaurant) => {
+    if (err) return console.log(err)
+
+    restaurant.remove((err) => {
+      if (err) return console.log(err)
+      return res.redirect('/')
+    })
+
+    //save to model
+  })
+
+})
+
 
 
 app.get('/search', (req, res) => {

@@ -47,6 +47,12 @@ app.get('/', (req, res) => {
   })
 })
 
+
+// create new restaurant page
+app.get('/restaurants/new', (req, res) => {
+  res.render('new')
+})
+
 app.get('/restaurants/:id', (req, res) => {
 
   //注意：是  restaurant.id 不是 restaurant
@@ -76,6 +82,30 @@ app.get('/restaurants/:id/edit', (req, res) => {
   Restaurant.findById(req.params.id, (err, restaurant) => {
     if (err) return console.log(err)
     return res.render('edit', { restaurant: restaurant })
+  })
+
+})
+
+// Create a restaurant
+app.post('/restaurants', (req, res) => {
+
+  Restaurant.create()
+
+  const restaurant = new Restaurant({
+    name: req.body.name,
+    name_en: req.body.name_en,
+    category: req.body.category,
+    image: req.body.image,
+    location: req.body.location,
+    phone: req.body.phone,
+    google_map: req.body.google_map,
+    rating: req.body.rating,
+    description: req.body.description
+  })
+
+  restaurant.save((err) => {
+    if (err) console.log(err)
+    return res.redirect('/')
   })
 
 })

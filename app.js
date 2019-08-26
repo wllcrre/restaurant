@@ -1,7 +1,7 @@
 // require packages used in the project
 const express = require('express')
 const app = express()
-const port = 3000
+const port = 4000
 
 // require express-handlebars here
 const exphbs = require('express-handlebars')
@@ -20,7 +20,7 @@ db.on('error', () => {
 })
 
 db.once('open', () => {
-  console.log('mongndb connected 123!')
+  console.log('mongndb connected restaurant db!')
 })
 
 // 載入 restaurant Model
@@ -38,6 +38,7 @@ app.use(express.static('public'))
 
 // routes setting
 app.use('/', require('./routes/home'))
+app.use('/users', require('./routes/users'))
 
 app.use('/restaurants', require('./routes/restaurant'))
 

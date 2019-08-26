@@ -7,12 +7,16 @@ const router = express.Router()
 const Restaurant = require('../models/restaurant')
 
 
+//　在每一個 router 上都加上驗證，驗證使用者是否已經登入
+const { authenticated } = require('../config/auth')
+
+
 // create new restaurant page
-router.get('/new', (req, res) => {
+router.get('/new', authenticated, (req, res) => {
   res.render('new')
 })
 
-router.get('/:id', (req, res) => {
+router.get('/:id', authenticated, (req, res) => {
 
   //注意：是  restaurant.id 不是 restaurant
   //restaurant => restaurant.id == req.params.restaurant_id  這是 arror function
@@ -29,7 +33,7 @@ router.get('/:id', (req, res) => {
 
 })
 
-router.get('/:id/edit', (req, res) => {
+router.get('/:id/edit', authenticated, (req, res) => {
 
   //注意：是  restaurant.id 不是 restaurant
   //restaurant => restaurant.id == req.params.restaurant_id  這是 arror function
@@ -46,7 +50,7 @@ router.get('/:id/edit', (req, res) => {
 })
 
 // Create a restaurant
-router.post('/', (req, res) => {
+router.post('/', authenticated, (req, res) => {
 
   Restaurant.create()
 
@@ -70,7 +74,7 @@ router.post('/', (req, res) => {
 })
 
 // Modify a restaurant
-router.post('/:id', (req, res) => {
+router.post('/:id', authenticated, (req, res) => {
 
   Restaurant.findById(req.params.id, (err, restaurant) => {
     if (err) return console.log(err)
@@ -96,7 +100,7 @@ router.post('/:id', (req, res) => {
 })
 
 // delete a restaurant
-router.post('/:id/delete', (req, res) => {
+router.post('/:id/delete', authenticated, (req, res) => {
 
   Restaurant.findById(req.params.id, (err, restaurant) => {
     if (err) return console.log(err)

@@ -6,15 +6,20 @@ const router = express.Router()
 
 const Restaurant = require('../models/restaurant')
 
+// 載入 auth middleware 裡的 authenticated 方法
+const { authenticated } = require('../config/auth')
 
-router.get('/', (req, res) => {
+router.get('/', authenticated, (req, res) => {
 
   // res.render('index', { restaurants: restaurantList })
 
-  Restaurant.find((err, restaurants) => {
-    if (err) return console.log(err)
-    return res.render('index', { restaurants: restaurants })
-  })
+  Restaurant.find({ userId: req.user._id })
+    .sort({ name: 'asc' })
+    .exec(
+      (err, restaurants) => {                  // 把 restaurants model 所有的資料都抓回來
+        if (err) return console.error(err)
+        return res.render('index', { restaurants: restaurants })  // 將資料傳給 index 樣板
+      })
 })
 
 

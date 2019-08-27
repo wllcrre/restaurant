@@ -63,7 +63,8 @@ router.post('/', authenticated, (req, res) => {
     phone: req.body.phone,
     google_map: req.body.google_map,
     rating: req.body.rating,
-    description: req.body.description
+    description: req.body.description,
+    userId: req.user._id
   })
 
   restaurant.save((err) => {

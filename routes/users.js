@@ -5,6 +5,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/users')
 const passport = require('passport')
+const bcrypt = require('bcryptjs')
 
 router.get('/register', (req, res) => {
   return res.render('register')
@@ -49,12 +50,22 @@ router.post('/register', (req, res) => {
         password
       })
 
-      newUser
-        .save()
-        .then(user => {
-          res.redirect('/')
+      // 先用 genSalt 產生「鹽」，第一個參數是複雜度係數，預設值是 10
+      bcrypt.genSalt(10, (err, salt) =>
+        // 再用 hash 把鹽跟使用者的密碼配再一起，然後產生雜湊處理後的 hash
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err
+          newUser.password = hash
+
+          // 用 bcrypt 處理密碼後，再把它儲存起來
+          newUser
+            .save()
+            .then(user => {
+              res.redirect('/')
+            })
+            .catch(err => console.log(err))
         })
-        .catch(err => console.log(err))
+      )
 
     }
   })

@@ -1,7 +1,12 @@
 // require packages used in the project
 const express = require('express')
 const app = express()
-const port = 4000
+const port = 3000
+
+// 判別開發環境
+if (process.env.NODE_ENV !== 'production') {      // 如果不是 production 模式
+  require('dotenv').config()                      // 使用 dotenv 讀取 .env 檔案
+}
 
 // require express-handlebars here
 const exphbs = require('express-handlebars')
@@ -35,6 +40,9 @@ app.use((req, res, next) => {
 
   res.locals.isAuthenticated = req.isAuthenticated() //辨識使用者是否已經登入的變數，讓 view 可以使用
   // isAuthenticated() 是一個 function ，回傳是一個 boolean 變數, 所以用一個變數去存。
+
+  res.locals.success_msg = req.flash('success_msg')
+  res.locals.warning_msg = req.flash('warning_msg')
 
   next()
 })
@@ -74,6 +82,8 @@ app.use('/users', require('./routes/users'))
 // app.use('/auth', require('./routes/auths'))
 
 app.use('/restaurants', require('./routes/restaurant'))
+
+app.use('/auth', require('./routes/auths'))
 
 
 app.get('/search', (req, res) => {
